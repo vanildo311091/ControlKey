@@ -373,7 +373,7 @@
         <h2>Formulário de Retirada</h2>
         <form id="form-retirada" class="form-grid">
             <div>
-                <label for="numero-chave">Número da Chave:</label>
+                <label for="numero-chave">Número da Chave(s):</label>
                 <div class="input-group">
                     <input type="text" id="numero-chave" required>
                     <span class="clear-btn">&times;</span>
@@ -495,7 +495,6 @@
         </table>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script>
         const formRetirada = document.getElementById('form-retirada');
         const tabelaHistorico = document.getElementById('tabela-historico');
@@ -791,44 +790,53 @@
                 }
             });
         }
-    
-        // --- Event Listeners para botões e inputs ---
-
+        
+        // --- EVENT LISTENER PARA O FORMULÁRIO DE RETIRADA (MODIFICADO) ---
         formRetirada.addEventListener('submit', function(event) {
             event.preventDefault();
-            const numeroChave = inputChaveRetirada.value.trim();
+            const numerosChaveInput = inputChaveRetirada.value.trim();
             const setor = inputSetorRetirada.value.trim();
             const nomeRetirou = inputNomeRetirada.value.trim();
 
-            if (!numeroChave || !setor || !nomeRetirou) {
+            if (!numerosChaveInput || !setor || !nomeRetirou) {
                 alert('Por favor, preencha todos os campos.');
                 return;
             }
+
+            // Separa os números das chaves usando espaço
+            const numerosChaveArray = numerosChaveInput.split(' ').filter(num => num !== '');
 
             const agora = new Date();
             const dataFormatada = agora.toLocaleDateString('pt-BR');
             const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
-            const novoRegistro = {
-                id: Date.now(),
-                numeroChave: numeroChave,
-                setor: setor,
-                nomeRetirou: nomeRetirou,
-                dataRetirada: dataFormatada,
-                horaRetirada: horaFormatada,
-                dataDevolucao: null,
-                horaDevolucao: null
-            };
+            if (numerosChaveArray.length > 0) {
+                numerosChaveArray.forEach(numeroChave => {
+                    const novoRegistro = {
+                        id: Date.now() + Math.random(),
+                        numeroChave: numeroChave,
+                        setor: setor,
+                        nomeRetirou: nomeRetirou,
+                        dataRetirada: dataFormatada,
+                        horaRetirada: horaFormatada,
+                        dataDevolucao: null,
+                        horaDevolucao: null
+                    };
+                    registros.unshift(novoRegistro);
+                });
 
-            registros.unshift(novoRegistro);
-            salvarRegistros();
-            renderizarTabela(registros);
-            formRetirada.reset();
+                salvarRegistros();
+                renderizarTabela(registros);
+                formRetirada.reset();
+            } else {
+                alert('Por favor, insira pelo menos um número de chave.');
+            }
         });
 
+        // Outros event listeners (restante do código original)
         searchInput.addEventListener('input', function() {
             const searchTerm = normalizeString(this.value);
-            const filteredData = registros.filter(reg => 
+            const filteredData = registros.filter(reg =>
                 normalizeString(reg.numeroChave).includes(searchTerm) ||
                 normalizeString(reg.setor).includes(searchTerm) ||
                 normalizeString(reg.nomeRetirou).includes(searchTerm)
@@ -883,7 +891,7 @@
 
         searchListaInput.addEventListener('input', function() {
             const searchTerm = normalizeString(this.value);
-            const filteredList = listaChaves.filter(chave => 
+            const filteredList = listaChaves.filter(chave =>
                 normalizeString(chave.numero).includes(searchTerm) ||
                 normalizeString(chave.setor).includes(searchTerm) ||
                 normalizeString(chave.observacao).includes(searchTerm)
@@ -892,10 +900,12 @@
         });
 
         showCadastrarBtn.addEventListener('click', function() {
-            const isVisible = cadastroFormContainer.style.display === 'block';
-            cadastroFormContainer.style.display = isVisible ? 'none' : 'block';
-            showCadastrarBtn.textContent = isVisible ? 'Cadastrar Chave' : 'Esconder Formulário';
-            if (isVisible) {
+            if (cadastroFormContainer.style.display === 'none') {
+                cadastroFormContainer.style.display = 'block';
+                this.textContent = 'Esconder Formulário';
+            } else {
+                cadastroFormContainer.style.display = 'none';
+                this.textContent = 'Cadastrar Chave';
                 formListaChaves.reset();
                 editandoListaId = null;
                 document.getElementById('btn-salvar-lista').textContent = 'Salvar Chave';
@@ -903,87 +913,83 @@
         });
 
         clearBtns.forEach(btn => {
-            const input = btn.previousElementSibling;
-            input.addEventListener('input', function() {
-                btn.style.display = this.value ? 'inline' : 'none';
-            });
             btn.addEventListener('click', function() {
-                input.value = '';
-                btn.style.display = 'none';
-                input.focus();
-                if (input.id === 'search-chave') {
+                this.previousElementSibling.value = '';
+                this.previousElementSibling.focus();
+                this.style.display = 'none';
+                if (this.previousElementSibling.id === 'search-chave') {
                     renderizarTabela(registros);
-                } else if (input.id === 'search-lista') {
+                } else if (this.previousElementSibling.id === 'search-lista') {
                     renderizarListaChaves();
                 }
             });
         });
 
-        // --- Funções de Exportação e Importação ---
-        function exportarDados(dados, filename) {
-            const textContent = JSON.stringify(dados, null, 2);
-            const blob = new Blob([textContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        document.querySelectorAll('input').forEach(input => {
+            const clearBtn = input.nextElementSibling;
+            if (clearBtn && clearBtn.classList.contains('clear-btn')) {
+                input.addEventListener('input', function() {
+                    clearBtn.style.display = this.value ? 'inline' : 'none';
+                });
+                input.addEventListener('focus', function() {
+                    if (this.value) {
+                        clearBtn.style.display = 'inline';
+                    }
+                });
+                input.addEventListener('blur', function() {
+                    // Pequeno delay para permitir o clique no botão
+                    setTimeout(() => {
+                        clearBtn.style.display = 'none';
+                    }, 100);
+                });
+            }
+        });
+
+        // Implementação dos botões de importação/exportação
+        exportHistoryBtn.addEventListener('click', () => exportData('history'));
+        importHistoryInput.addEventListener('change', (e) => importData(e, 'history'));
+
+        exportListBtn.addEventListener('click', () => exportData('list'));
+        importFileInput.addEventListener('change', (e) => importData(e, 'list'));
+
+        function exportData(type) {
+            const data = type === 'history' ? registros : listaChaves;
+            const dataString = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataString], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `controle-chaves-${type}-${new Date().toISOString().slice(0, 10)}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
-        exportListBtn.addEventListener('click', function() {
-            exportarDados(listaChaves, 'lista_chaves.txt');
-        });
-
-        exportHistoryBtn.addEventListener('click', function() {
-            exportarDados(registros, 'historico_chaves.txt');
-        });
-
-        function importarDados(event, callback) {
+        function importData(event, type) {
             const file = event.target.files[0];
-            if (!file) {
-                return;
-            }
+            if (!file) return;
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     const importedData = JSON.parse(e.target.result);
-                    callback(importedData);
-                    alert('Dados importados com sucesso!');
+                    if (type === 'history') {
+                        registros = importedData;
+                        salvarRegistros();
+                        renderizarTabela(registros);
+                    } else {
+                        listaChaves = importedData;
+                        salvarListaChaves();
+                    }
+                    alert(`Dados de ${type === 'history' ? 'histórico' : 'lista'} importados com sucesso!`);
                 } catch (error) {
                     alert('Erro ao importar o arquivo. Verifique se o formato está correto.');
-                    console.error('Erro de importação:', error);
+                    console.error('Import error:', error);
                 }
             };
             reader.readAsText(file);
         }
 
-        importFileInput.addEventListener('change', function(event) {
-            importarDados(event, (importedData) => {
-                listaChaves = importedData;
-                salvarListaChaves();
-            });
-        });
-
-        importHistoryInput.addEventListener('change', function(event) {
-            importarDados(event, (importedData) => {
-                registros = importedData;
-                salvarRegistros();
-                renderizarTabela(registros);
-            });
-        });
-
-        document.addEventListener('click', function(event) {
-            document.querySelectorAll('.menu-options').forEach(menu => {
-                if (!menu.parentElement.contains(event.target)) {
-                    menu.style.display = 'none';
-                }
-            });
-        });
-
-        // --- Inicialização ---
+        // Inicialização da aplicação
         carregarRegistros();
     </script>
 </body>
