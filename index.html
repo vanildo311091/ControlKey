@@ -107,7 +107,7 @@
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -159,18 +159,18 @@
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
         }
-        
+
         .history-actions button:hover:enabled {
             background-color: #f1f1f1;
             color: #2c3e50;
         }
-        
+
         .history-actions button:disabled {
             color: #7f8c8d;
             border-color: #7f8c8d;
             cursor: not-allowed;
         }
-        
+
         /* APLICAÇÃO DO LAYOUT DE GRID NOS FORMULÁRIOS */
         .form-grid {
             display: grid;
@@ -187,11 +187,11 @@
         .input-group {
             position: relative;
         }
-        
+
         .input-group input {
             padding-right: 30px;
         }
-        
+
         .clear-btn {
             position: absolute;
             right: 5px;
@@ -207,15 +207,15 @@
             display: block;
             margin-bottom: 5px;
         }
-        
+
         input {
             width: 100%;
-            padding: 4px; 
+            padding: 4px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
         }
-        
+
         button {
             background-color: #3498db;
             color: white;
@@ -226,11 +226,11 @@
             font-size: 16px;
             transition: background-color 0.3s;
         }
-        
+
         button:hover {
             background-color: #2980b9;
         }
-        
+
         #btn-cadastrar {
             width: auto;
             padding: 10px 20px;
@@ -268,11 +268,12 @@
             background-color: #f9f9f9;
             max-width: 300px;
         }
-        
-        .search-container label, .search-container input {
+
+        .search-container label,
+        .search-container input {
             display: block;
         }
-        
+
         .actions-container {
             display: flex;
             justify-content: flex-start;
@@ -281,34 +282,35 @@
             align-items: flex-end;
             flex-wrap: wrap;
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-        
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-        
+
         th {
             background-color: #2c3e50;
             color: #f1f1f1;
             font-weight: bold;
         }
-        
+
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        
+
         .numero-chave-bold {
             font-weight: bold;
         }
-        
+
         .devolver-btn {
             background-color: #e74c4c;
             color: white;
@@ -318,11 +320,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .devolver-btn:hover {
             background-color: #c0392b;
         }
-        
+
         .devolvida {
             background-color: #2ecc71;
             color: white;
@@ -354,13 +356,13 @@
             padding: 0 5px;
             color: #2c3e50;
         }
-        
+
         .menu-options {
             position: absolute;
             right: 0;
             top: 100%;
             background-color: #fff;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
             border-radius: 5px;
             min-width: 120px;
@@ -378,12 +380,13 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .menu-options button:hover {
             background-color: #f1f1f1;
         }
 
-        .edit-lista-btn, .delete-lista-btn {
+        .edit-lista-btn,
+        .delete-lista-btn {
             background-color: #3498db;
             color: white;
             border: none;
@@ -420,7 +423,7 @@
                 box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
             }
         }
-        
+
         .flashing {
             animation: pulse 1.5s infinite;
         }
@@ -449,7 +452,7 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        </div>
+    </div>
 
     <div class="container" id="history-container">
         <h1>Controle de Retirada e Devolução de Chaves</h1>
@@ -491,7 +494,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div id="history-title">
             <h2>Histórico de Retiradas</h2>
             <div class="history-actions">
@@ -500,13 +503,13 @@
                 <button id="redo-btn" title="Refazer a última ação desfeita" disabled>&#x2192;</button>
             </div>
         </div>
-        
+
         <div class="import-export-container">
             <button id="export-history-btn">Exportar Histórico</button>
             <button onclick="document.getElementById('import-history-input').click()">Importar Histórico</button>
             <input type="file" id="import-history-input" accept=".txt">
         </div>
-        
+
         <table>
             <thead>
                 <tr>
@@ -524,13 +527,13 @@
             </tbody>
         </table>
     </div>
-    
+
     <div id="lista-chaves-container" class="container" style="display: none;">
         <div class="container-header">
             <h1>Lista de Chaves</h1>
             <button id="back-to-history-btn" class="flashing">Voltar</button>
         </div>
-        
+
         <button id="show-cadastrar-btn">Cadastrar Chave</button>
 
         <div id="cadastro-form-container" style="display: none;">
@@ -581,6 +584,7 @@
         </table>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script>
         const formRetirada = document.getElementById('form-retirada');
         const tabelaHistorico = document.getElementById('tabela-historico');
@@ -606,10 +610,8 @@
         const inputChaveRetirada = document.getElementById('numero-chave');
         const inputSetorRetirada = document.getElementById('setor');
         const inputNomeRetirada = document.getElementById('nome-retirou');
-
         const exportListBtn = document.getElementById('export-list-btn');
         const importFileInput = document.getElementById('import-file-input');
-
         const exportHistoryBtn = document.getElementById('export-history-btn');
         const importHistoryInput = document.getElementById('import-history-input');
 
@@ -664,25 +666,46 @@
             updateButtonStates();
         }
 
+        // CORREÇÃO: Função para renderizar a tabela, garantindo que os últimos registros fiquem no topo
         function renderizarTabela(dados) {
             tabelaHistorico.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+
             const naoDevolvidos = dados.filter(reg => !reg.dataDevolucao);
             const devolvidos = dados.filter(reg => reg.dataDevolucao);
-            const dadosOrdenados = [...naoDevolvidos, ...devolvidos];
-            const fragment = document.createDocumentFragment();
+
+            const dadosOrdenados = [...naoDevolvidos, ...devolvidos].sort((a, b) => {
+                const isADevolved = !!a.dataDevolucao;
+                const isBDevolved = !!b.dataDevolucao;
+
+                if (isADevolved && !isBDevolved) {
+                    return 1;
+                }
+                if (!isADevolved && isBDevolved) {
+                    return -1;
+                }
+                const dateA = new Date(a.dataRetirada.split('/').reverse().join('-') + 'T' + a.horaRetirada);
+                const dateB = new Date(b.dataRetirada.split('/').reverse().join('-') + 'T' + b.horaRetirada);
+                return dateB - dateA;
+            });
+
             dadosOrdenados.forEach((registro) => {
                 const novaLinha = document.createElement('tr');
                 let acoesHtml;
+                let menuOptionsHtml = `<button class="delete-btn" data-id="${registro.id}">Excluir</button>`;
+
                 if (registro.dataDevolucao) {
                     acoesHtml = `<span class="devolvida">Devolvida</span>`;
+                    menuOptionsHtml += `<button class="reverter-btn" data-id="${registro.id}">Reverter Devolução</button>`;
                 } else {
                     acoesHtml = `<button class="devolver-btn" data-id="${registro.id}">Devolver</button>`;
                 }
+
                 const menuHtml = `
                     <div class="actions-menu">
                         <button class="menu-btn">&#8230;</button>
                         <div class="menu-options" style="display: none;">
-                            <button class="delete-btn" data-id="${registro.id}">Excluir</button>
+                            ${menuOptionsHtml}
                         </div>
                     </div>
                 `;
@@ -752,12 +775,28 @@
                     }
                 });
             });
+
             document.querySelectorAll('.delete-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const recordId = parseFloat(this.dataset.id);
                     deleteRecord(recordId);
                 });
             });
+
+            document.querySelectorAll('.reverter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const recordId = parseFloat(this.dataset.id);
+                    const index = registros.findIndex(reg => reg.id === recordId);
+                    if (index !== -1) {
+                        saveState();
+                        registros[index].dataDevolucao = null;
+                        registros[index].horaDevolucao = null;
+                        salvarRegistros();
+                        renderizarTabela(registros);
+                    }
+                });
+            });
+
             document.querySelectorAll('.menu-btn').forEach(btn => {
                 btn.addEventListener('click', function(event) {
                     event.stopPropagation();
@@ -829,7 +868,7 @@
         function popularSugestoes() {
             const setoresUnicos = new Set();
             const nomesUnicos = new Set();
-            
+
             registros.forEach(registro => {
                 setoresUnicos.add(registro.setor);
                 nomesUnicos.add(registro.nomeRetirou);
@@ -893,86 +932,57 @@
             const agora = new Date();
             const dataRetirada = agora.toLocaleDateString('pt-BR');
             const horaRetirada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            const numeroChaveInput = document.getElementById('numero-chave').value;
-            const setor = document.getElementById('setor').value;
-            const nomeRetirou = document.getElementById('nome-retirou').value;
-            const chaves = numeroChaveInput.split(/[\s,]+/).filter(chave => chave.trim() !== '');
-            if (chaves.length === 0) {
-                alert('Por favor, digite pelo menos um número de chave.');
+            const numeroChave = document.getElementById('numero-chave').value.trim();
+            const setor = document.getElementById('setor').value.trim();
+            const nomeRetirou = document.getElementById('nome-retirou').value.trim();
+
+            if (numeroChave === "" || setor === "" || nomeRetirou === "") {
+                alert("Por favor, preencha todos os campos obrigatórios.");
                 return;
             }
+
+            const novoRegistro = {
+                id: Date.now(),
+                numeroChave: numeroChave,
+                setor: setor,
+                nomeRetirou: nomeRetirou,
+                dataRetirada: dataRetirada,
+                horaRetirada: horaRetirada,
+                dataDevolucao: null,
+                horaDevolucao: null
+            };
+
             saveState();
-            chaves.forEach(chave => {
-                const chaveFormatada = chave.length === 1 && !isNaN(parseInt(chave)) ? `0${chave}` : chave;
-                const novoRegistro = {
-                    id: Date.now() + Math.random(),
-                    dataRetirada,
-                    horaRetirada,
-                    numeroChave: chaveFormatada,
-                    setor,
-                    nomeRetirou,
-                    dataDevolucao: null,
-                    horaDevolucao: null
-                };
-                registros.unshift(novoRegistro);
-            });
+            registros.push(novoRegistro);
             salvarRegistros();
             renderizarTabela(registros);
+
             formRetirada.reset();
+            clearAllInputs();
+            document.getElementById('numero-chave').focus();
         });
 
-        formListaChaves.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const numero = document.getElementById('lista-numero-chave').value;
-            const setor = document.getElementById('lista-setor').value;
-            const observacao = document.getElementById('lista-observacao').value;
-            const numeroExistente = listaChaves.find(c => c.numero === numero);
-            if (editandoListaId) {
-                if (numeroExistente && numeroExistente.id !== editandoListaId) {
-                    alert('A chave ' + numero + ' já existe. Por favor, digite um número de chave diferente.');
-                    return;
-                }
-                const index = listaChaves.findIndex(c => c.id === editandoListaId);
-                if (index !== -1) {
-                    listaChaves[index] = { ...listaChaves[index], numero, setor, observacao };
-                }
-            } else {
-                if (numeroExistente) {
-                    alert('A chave ' + numero + ' já existe. Por favor, digite um número de chave diferente.');
-                    return;
-                }
-                const novaChave = { id: Date.now() + Math.random(), numero, setor, observacao };
-                listaChaves.push(novaChave);
-            }
-            editandoListaId = null;
-            document.getElementById('btn-salvar-lista').textContent = 'Salvar Chave';
-            salvarListaChaves();
-            formListaChaves.reset();
-            cadastroFormContainer.style.display = 'none';
-            showCadastrarBtn.textContent = 'Cadastrar Chave';
-        });
-
+        // Evento de pesquisa
         searchInput.addEventListener('input', function() {
-            const termo = normalizeString(this.value);
-            const registrosFiltrados = registros.filter(reg =>
-                normalizeString(reg.numeroChave).includes(termo) ||
-                normalizeString(reg.setor).includes(termo) ||
-                normalizeString(reg.nomeRetirou).includes(termo)
+            const searchTerm = normalizeString(this.value);
+            const resultados = registros.filter(registro =>
+                normalizeString(registro.numeroChave).includes(searchTerm) ||
+                normalizeString(registro.setor).includes(searchTerm) ||
+                normalizeString(registro.nomeRetirou).includes(searchTerm)
             );
-            renderizarTabela(registrosFiltrados);
+            renderizarTabela(resultados);
         });
 
         searchListaInput.addEventListener('input', function() {
-            const termo = normalizeString(this.value);
-            const chavesFiltradas = listaChaves.filter(chave =>
-                normalizeString(chave.numero).includes(termo) ||
-                normalizeString(chave.setor).includes(termo) ||
-                normalizeString(chave.observacao).includes(termo)
+            const searchTerm = normalizeString(this.value);
+            const resultados = listaChaves.filter(chave =>
+                normalizeString(chave.numero).includes(searchTerm) ||
+                normalizeString(chave.setor).includes(searchTerm)
             );
-            renderizarListaChaves(chavesFiltradas);
+            renderizarListaChaves(resultados);
         });
 
-        // Implementação do menu lateral
+        // --- SideNav e Outros Eventos ---
         function openNav() {
             sideNav.style.width = "250px";
             openMenuBtn.classList.add('hidden');
@@ -986,148 +996,142 @@
         openMenuBtn.addEventListener('click', openNav);
         sideNav.querySelector('.closebtn').addEventListener('click', closeNav);
 
-        // Alternar entre histórico e lista de chaves
-        listaBtn.addEventListener('click', () => {
+        listaBtn.addEventListener('click', function() {
             historyContainer.style.display = 'none';
             listaChavesContainer.style.display = 'block';
+            if (window.innerWidth <= 600) {
+                closeNav();
+            }
         });
 
-        backToHistoryBtn.addEventListener('click', () => {
+        backToHistoryBtn.addEventListener('click', function() {
             listaChavesContainer.style.display = 'none';
             historyContainer.style.display = 'block';
+            if (window.innerWidth <= 600) {
+                closeNav();
+            }
         });
 
-        // Mostrar/Esconder formulário de cadastro de chaves
-        showCadastrarBtn.addEventListener('click', () => {
-            const isVisible = cadastroFormContainer.style.display === 'block';
-            cadastroFormContainer.style.display = isVisible ? 'none' : 'block';
-            showCadastrarBtn.textContent = isVisible ? 'Cadastrar Chave' : 'Esconder Formulário';
-            if (!isVisible) {
-                editandoListaId = null;
+        showCadastrarBtn.addEventListener('click', function() {
+            if (cadastroFormContainer.style.display === 'block') {
+                cadastroFormContainer.style.display = 'none';
+                showCadastrarBtn.textContent = 'Cadastrar Chave';
                 formListaChaves.reset();
+                editandoListaId = null;
+            } else {
+                cadastroFormContainer.style.display = 'block';
+                showCadastrarBtn.textContent = 'Esconder Formulário';
                 document.getElementById('btn-salvar-lista').textContent = 'Salvar Chave';
             }
         });
 
-        // Limpar botão dos inputs
+        formListaChaves.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const numero = document.getElementById('lista-numero-chave').value.trim();
+            const setor = document.getElementById('lista-setor').value.trim();
+            const observacao = document.getElementById('lista-observacao').value.trim();
+
+            if (editandoListaId !== null) {
+                const index = listaChaves.findIndex(c => c.id === editandoListaId);
+                if (index !== -1) {
+                    listaChaves[index].numero = numero;
+                    listaChaves[index].setor = setor;
+                    listaChaves[index].observacao = observacao;
+                }
+            } else {
+                const novaChave = {
+                    id: Date.now(),
+                    numero: numero,
+                    setor: setor,
+                    observacao: observacao
+                };
+                listaChaves.push(novaChave);
+            }
+
+            salvarListaChaves();
+            formListaChaves.reset();
+            editandoListaId = null;
+            document.getElementById('btn-salvar-lista').textContent = 'Salvar Chave';
+            alert('Chave salva com sucesso!');
+        });
+
+        // Funções de exportação e importação
+        function exportToText(data, filename) {
+            const textData = JSON.stringify(data, null, 2);
+            const blob = new Blob([textData], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importFromText(event, dataType) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (dataType === 'list') {
+                        listaChaves = importedData;
+                        salvarListaChaves();
+                        alert('Lista de chaves importada com sucesso!');
+                    } else if (dataType === 'history') {
+                        registros = importedData;
+                        salvarRegistros();
+                        renderizarTabela(registros);
+                        alert('Histórico de retiradas importado com sucesso!');
+                    }
+                } catch (error) {
+                    alert('Erro ao importar o arquivo. Verifique se o formato está correto.');
+                    console.error('Erro de importação:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        exportListBtn.addEventListener('click', () => exportToText(listaChaves, 'lista_chaves.txt'));
+        importFileInput.addEventListener('change', (event) => importFromText(event, 'list'));
+        exportHistoryBtn.addEventListener('click', () => exportToText(registros, 'historico_chaves.txt'));
+        importHistoryInput.addEventListener('change', (event) => importFromText(event, 'history'));
+
+        // Adicionar funcionalidade para o botão de limpar campo
         clearBtns.forEach(btn => {
             btn.addEventListener('click', function() {
-                const input = this.closest('.input-group').querySelector('input');
+                const input = this.previousElementSibling;
                 input.value = '';
                 input.focus();
                 if (input.id === 'search-chave') {
                     renderizarTabela(registros);
-                } else if (input.id === 'search-lista') {
+                }
+                if (input.id === 'search-lista') {
                     renderizarListaChaves();
                 }
+                this.style.display = 'none';
             });
         });
 
-        document.querySelectorAll('.input-group input').forEach(input => {
-            const clearBtn = input.closest('.input-group').querySelector('.clear-btn');
+        document.querySelectorAll('input').forEach(input => {
             input.addEventListener('input', function() {
-                clearBtn.style.display = this.value ? 'block' : 'none';
-            });
-            input.addEventListener('blur', function() {
-                setTimeout(() => {
-                    if (!document.activeElement.classList.contains('clear-btn')) {
-                        clearBtn.style.display = 'none';
-                    }
-                }, 100);
-            });
-            input.addEventListener('focus', function() {
-                if (this.value) {
-                    clearBtn.style.display = 'block';
+                const clearBtn = this.nextElementSibling;
+                if (clearBtn && clearBtn.classList.contains('clear-btn')) {
+                    clearBtn.style.display = this.value ? 'block' : 'none';
                 }
             });
         });
 
-        document.addEventListener('click', (event) => {
-            document.querySelectorAll('.menu-options').forEach(menu => {
-                if (!menu.contains(event.target) && menu.style.display === 'block') {
-                    menu.style.display = 'none';
-                }
-            });
-        });
+        function clearAllInputs() {
+            inputChaveRetirada.value = '';
+            inputSetorRetirada.value = '';
+            inputNomeRetirada.value = '';
+            document.querySelectorAll('.input-group .clear-btn').forEach(btn => btn.style.display = 'none');
+        }
 
-        // --- Funções de Exportar e Importar ---
-        exportListBtn.addEventListener('click', () => {
-            const dataStr = JSON.stringify(listaChaves);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'lista_chaves_backup.txt';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            alert('Lista de chaves exportada com sucesso! Salve o arquivo "lista_chaves_backup.txt" em um local seguro.');
-        });
-
-        importFileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) {
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    if (Array.isArray(importedData)) {
-                        listaChaves = importedData;
-                        salvarListaChaves();
-                        renderizarListaChaves();
-                        alert('Lista de chaves importada com sucesso!');
-                    } else {
-                        alert('Formato de arquivo inválido. Por favor, importe um arquivo de backup válido.');
-                    }
-                } catch (error) {
-                    alert('Erro ao ler o arquivo. Certifique-se de que é um arquivo de backup válido.');
-                }
-            };
-            reader.readAsText(file);
-        });
-
-        exportHistoryBtn.addEventListener('click', () => {
-            const dataStr = JSON.stringify(registros);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'historico_chaves_backup.txt';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            alert('Histórico de chaves exportado com sucesso! Salve o arquivo "historico_chaves_backup.txt" em um local seguro.');
-        });
-
-        importHistoryInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) {
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const importedData = JSON.parse(e.target.result);
-                    if (Array.isArray(importedData)) {
-                        registros = importedData;
-                        salvarRegistros();
-                        renderizarTabela(registros);
-                        alert('Histórico de chaves importado com sucesso!');
-                    } else {
-                        alert('Formato de arquivo inválido. Por favor, importe um arquivo de backup válido.');
-                    }
-                } catch (error) {
-                    alert('Erro ao ler o arquivo. Certifique-se de que é um arquivo de backup válido.');
-                }
-            };
-            reader.readAsText(file);
-        });
-
-        // Ações iniciais
+        // Inicialização da aplicação
         carregarRegistros();
     </script>
 </body>
