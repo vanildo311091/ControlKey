@@ -118,8 +118,16 @@
             transform: translateY(-50%);
             font-size: 16px;
             color: #999;
-            display: none;
+            cursor: pointer; 
+            display: none; /* Inicialmente oculto */
+            font-weight: bold; 
+            line-height: 1; 
         }
+        
+        /* Regra para mostrar o X no hover - O JAVASCRIPT fará o controle real */
+        /* .input-group:hover .clear-btn {
+            display: block;
+        } */
 
         label {
             font-weight: bold;
@@ -452,15 +460,24 @@
             <form id="form-lista-chaves" class="form-grid">
                 <div>
                     <label for="lista-numero-chave">Número da Chave:</label>
-                    <input type="text" id="lista-numero-chave" required>
+                    <div class="input-group">
+                        <input type="text" id="lista-numero-chave" required>
+                        <span class="clear-btn">&times;</span>
+                    </div>
                 </div>
                 <div>
                     <label for="lista-setor">Setor:</label>
-                    <input type="text" id="lista-setor" required>
+                    <div class="input-group">
+                        <input type="text" id="lista-setor" required>
+                        <span class="clear-btn">&times;</span>
+                    </div>
                 </div>
                 <div>
                     <label for="lista-observacao">Observação:</label>
-                    <input type="text" id="lista-observacao">
+                    <div class="input-group">
+                        <input type="text" id="lista-observacao">
+                        <span class="clear-btn">&times;</span>
+                    </div>
                 </div>
                 <button type="submit" id="btn-salvar-lista">Salvar Chave</button>
             </form>
@@ -565,6 +582,8 @@
             renderizarTabela(registros);
             renderizarListaChaves();
             popularSugestoes();
+            // Adiciona o setup para os botões clear
+            setupClearButtons(); 
         }
 
         function renderizarTabela(dados) {
@@ -790,7 +809,74 @@
                 }
             });
         }
-        
+
+        // --- Função para configurar os botões de limpeza (CLEAR BUTTONS) ---
+        function setupClearButtons() {
+            const inputGroups = document.querySelectorAll('.input-group');
+
+            inputGroups.forEach(group => {
+                const input = group.querySelector('input');
+                const clearBtn = group.querySelector('.clear-btn');
+
+                if (input && clearBtn) {
+                    // Função para verificar e mostrar/esconder o botão
+                    const toggleClearBtn = () => {
+                        if (input.value.trim() !== '') {
+                            clearBtn.style.display = 'block';
+                        } else {
+                            clearBtn.style.display = 'none';
+                        }
+                    };
+
+                    // Adiciona evento para mostrar o botão no hover
+                    group.addEventListener('mouseenter', () => {
+                        toggleClearBtn();
+                    });
+
+                    // Esconde o botão ao tirar o mouse, se o input não estiver em foco
+                    group.addEventListener('mouseleave', () => {
+                        if (document.activeElement !== input) {
+                            clearBtn.style.display = 'none';
+                        }
+                    });
+                    
+                    // Esconde o botão ao tirar o foco (blur)
+                    input.addEventListener('blur', () => {
+                         // Um pequeno timeout para permitir que o clique no X seja registrado antes do blur
+                        setTimeout(() => {
+                           if (document.activeElement !== clearBtn) {
+                                toggleClearBtn();
+                           }
+                        }, 100); 
+                    });
+                    
+                    // Mostra o botão quando ganha foco (focus) ou quando o conteúdo muda (input)
+                    input.addEventListener('focus', toggleClearBtn);
+                    input.addEventListener('input', toggleClearBtn);
+
+                    // Adiciona evento de clique para limpar o campo
+                    clearBtn.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        input.value = ''; // Limpa o valor do input
+                        clearBtn.style.display = 'none'; // Esconde o botão após limpar
+                        input.focus(); // Opcional: mantém o foco no campo limpo
+                        
+                        // ** CORREÇÃO CHAVE APLICADA AQUI **
+                        // Se o campo limpo for o de pesquisa (searchInput ou searchListaInput), renderiza tudo novamente.
+                        if (input.id === 'search-chave') {
+                            renderizarTabela(registros);
+                        } else if (input.id === 'search-lista') {
+                            renderizarListaChaves(listaChaves);
+                        }
+                    });
+
+                    // Garante que o estado inicial esteja correto (escondido se vazio)
+                    toggleClearBtn();
+                }
+            });
+        }
+
+
         // --- EVENT LISTENER PARA O FORMULÁRIO DE RETIRADA (MODIFICADO) ---
         formRetirada.addEventListener('submit', function(event) {
             event.preventDefault();
@@ -828,21 +914,34 @@
                 salvarRegistros();
                 renderizarTabela(registros);
                 formRetirada.reset();
+                setupClearButtons(); // Re-executa para garantir que os botões de clear estão escondidos após o reset
             } else {
                 alert('Por favor, insira pelo menos um número de chave.');
             }
         });
 
-        // Outros event listeners (restante do código original)
+        // --- EVENT LISTENER DE PESQUISA (CORRIGIDO) ---
         searchInput.addEventListener('input', function() {
             const searchTerm = normalizeString(this.value);
-            const filteredData = registros.filter(reg =>
-                normalizeString(reg.numeroChave).includes(searchTerm) ||
-                normalizeString(reg.setor).includes(searchTerm) ||
-                normalizeString(reg.nomeRetirou).includes(searchTerm)
-            );
-            renderizarTabela(filteredData);
+            
+            if (searchTerm === '') {
+                // Se o campo estiver vazio, renderiza todos os registros
+                renderizarTabela(registros); 
+            } else {
+                // Se houver termo de busca, filtra
+                const filteredData = registros.filter(reg =>
+                    normalizeString(reg.numeroChave).includes(searchTerm) ||
+                    normalizeString(reg.setor).includes(searchTerm) ||
+                    normalizeString(reg.nomeRetirou).includes(searchTerm)
+                );
+                renderizarTabela(filteredData);
+            }
+
+            // Garante que o botão X de pesquisa esteja visível ao digitar
+            setupClearButtons(); 
         });
+
+        // --- RESTANTE DOS EVENT LISTENERS ---
 
         listaBtn.addEventListener('click', function() {
             historyContainer.style.display = 'none';
@@ -887,109 +986,122 @@
             formListaChaves.reset();
             cadastroFormContainer.style.display = 'none';
             showCadastrarBtn.textContent = 'Cadastrar Chave';
+            setupClearButtons(); // Garante que os campos de lista sejam limpos
         });
 
         searchListaInput.addEventListener('input', function() {
             const searchTerm = normalizeString(this.value);
-            const filteredList = listaChaves.filter(chave =>
-                normalizeString(chave.numero).includes(searchTerm) ||
-                normalizeString(chave.setor).includes(searchTerm) ||
-                normalizeString(chave.observacao).includes(searchTerm)
-            );
-            renderizarListaChaves(filteredList);
+            
+            if (searchTerm === '') {
+                // Se o campo estiver vazio, renderiza todas as chaves
+                renderizarListaChaves(listaChaves); 
+            } else {
+                // Se houver termo de busca, filtra
+                const filteredList = listaChaves.filter(chave =>
+                    normalizeString(chave.numero).includes(searchTerm) ||
+                    normalizeString(chave.setor).includes(searchTerm)
+                );
+                renderizarListaChaves(filteredList);
+            }
+
+            setupClearButtons();
         });
 
         showCadastrarBtn.addEventListener('click', function() {
             if (cadastroFormContainer.style.display === 'none') {
                 cadastroFormContainer.style.display = 'block';
-                this.textContent = 'Esconder Formulário';
-            } else {
-                cadastroFormContainer.style.display = 'none';
-                this.textContent = 'Cadastrar Chave';
+                showCadastrarBtn.textContent = 'Esconder Formulário';
+                // Reinicia o formulário e o estado de edição
                 formListaChaves.reset();
                 editandoListaId = null;
                 document.getElementById('btn-salvar-lista').textContent = 'Salvar Chave';
+                setupClearButtons(); // Garante o estado inicial dos botões
+            } else {
+                cadastroFormContainer.style.display = 'none';
+                showCadastrarBtn.textContent = 'Cadastrar Chave';
             }
         });
 
-        clearBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                this.previousElementSibling.value = '';
-                this.previousElementSibling.focus();
-                this.style.display = 'none';
-                if (this.previousElementSibling.id === 'search-chave') {
-                    renderizarTabela(registros);
-                } else if (this.previousElementSibling.id === 'search-lista') {
-                    renderizarListaChaves();
-                }
+        // Event listener para fechar menus de ação ao clicar em qualquer outro lugar
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.menu-options').forEach(menu => {
+                menu.style.display = 'none';
             });
         });
 
-        document.querySelectorAll('input').forEach(input => {
-            const clearBtn = input.nextElementSibling;
-            if (clearBtn && clearBtn.classList.contains('clear-btn')) {
-                input.addEventListener('input', function() {
-                    clearBtn.style.display = this.value ? 'inline' : 'none';
-                });
-                input.addEventListener('focus', function() {
-                    if (this.value) {
-                        clearBtn.style.display = 'inline';
-                    }
-                });
-                input.addEventListener('blur', function() {
-                    // Pequeno delay para permitir o clique no botão
-                    setTimeout(() => {
-                        clearBtn.style.display = 'none';
-                    }, 100);
-                });
-            }
-        });
-
-        // Implementação dos botões de importação/exportação
-        exportHistoryBtn.addEventListener('click', () => exportData('history'));
-        importHistoryInput.addEventListener('change', (e) => importData(e, 'history'));
-
-        exportListBtn.addEventListener('click', () => exportData('list'));
-        importFileInput.addEventListener('change', (e) => importData(e, 'list'));
-
-        function exportData(type) {
-            const data = type === 'history' ? registros : listaChaves;
+        // Funções de Importação e Exportação (Mantidas para completar o código)
+        function exportData(data, filename) {
             const dataString = JSON.stringify(data, null, 2);
-            const blob = new Blob([dataString], { type: 'text/plain;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `controle-chaves-${type}-${new Date().toISOString().slice(0, 10)}.txt`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const blob = new Blob([dataString], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
-        function importData(event, type) {
-            const file = event.target.files[0];
-            if (!file) return;
-
+        function importData(fileInput, callback) {
+            if (fileInput.files.length === 0) {
+                alert("Por favor, selecione um arquivo.");
+                return;
+            }
+            const file = fileInput.files[0];
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
                     const importedData = JSON.parse(e.target.result);
-                    if (type === 'history') {
-                        registros = importedData;
-                        salvarRegistros();
-                        renderizarTabela(registros);
-                    } else {
-                        listaChaves = importedData;
-                        salvarListaChaves();
-                    }
-                    alert(`Dados de ${type === 'history' ? 'histórico' : 'lista'} importados com sucesso!`);
+                    callback(importedData);
+                    alert("Dados importados com sucesso!");
                 } catch (error) {
-                    alert('Erro ao importar o arquivo. Verifique se o formato está correto.');
-                    console.error('Import error:', error);
+                    alert("Erro ao ler o arquivo. Certifique-se de que é um JSON válido.");
+                    console.error(error);
                 }
             };
             reader.readAsText(file);
         }
 
-        // Inicialização da aplicação
+        exportListBtn.addEventListener('click', () => {
+            exportData(listaChaves, 'lista_chaves.txt');
+        });
+
+        importFileInput.addEventListener('change', (event) => {
+            importData(event.target, (importedData) => {
+                if (Array.isArray(importedData)) {
+                    listaChaves = importedData.map(item => ({
+                        ...item,
+                        id: item.id || Date.now() + Math.random()
+                    }));
+                    salvarListaChaves();
+                } else {
+                    alert("O arquivo importado não contém uma lista de chaves válida.");
+                }
+            });
+        });
+
+        exportHistoryBtn.addEventListener('click', () => {
+            exportData(registros, 'historico_chaves.txt');
+        });
+
+        importHistoryInput.addEventListener('change', (event) => {
+            importData(event.target, (importedData) => {
+                if (Array.isArray(importedData)) {
+                    registros = importedData.map(item => ({
+                        ...item,
+                        id: item.id || Date.now() + Math.random()
+                    }));
+                    salvarRegistros();
+                    renderizarTabela(registros);
+                } else {
+                    alert("O arquivo importado não contém um histórico de registros válido.");
+                }
+            });
+        });
+
+
+        // 🚀 CARREGAR DADOS AO INICIAR 🚀
         carregarRegistros();
     </script>
 </body>
